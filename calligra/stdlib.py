@@ -154,7 +154,6 @@ types.append(
     ).type().name()
 )
 types.append(boolean(namespace).type().name())
-types.append(char(namespace).type().name())
 types.append(
     calligra.IntegerType(
         namespace,
@@ -220,6 +219,16 @@ types.append(
         'int64_t',
         min_value = 'INT64_MIN',
         max_value = 'INT64_MAX',
+        imported = True
+    ).type().name()
+)
+types.append(char(namespace).type().name())
+types.append(
+    calligra.IntegerType(
+        namespace,
+        'unsigned char',
+        min_value = '0',
+        max_value = 'UCHAR_MAX',
         imported = True
     ).type().name()
 )
