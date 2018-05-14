@@ -641,5 +641,4 @@ class namespace:
 		for t in self.types:
 			if str(t) == name:
 				return self.types[name]
-		print(self.types)
-		raise RuntimeError('unknown type %s' % (name, ))
+		raise KeyError('unknown type %s' % (name, ))
