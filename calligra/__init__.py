@@ -642,3 +642,10 @@ class namespace:
 			if str(t) == name:
 				return self.types[name]
 		raise KeyError('unknown type %s' % (name, ))
+
+	def has(self, name):
+		try:
+			self.get(name)
+			return True
+		except KeyError:
+			return False
