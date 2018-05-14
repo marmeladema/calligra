@@ -19,7 +19,7 @@ class PrimaryType(object):
 		self._imported = imported
 		super().__init__(*args, **kwargs)
 
-		if register:
+		if register and self.name():
 			self.register(namespace)
 
 	def __getattr__(self, name):
