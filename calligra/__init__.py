@@ -180,7 +180,11 @@ class declaration(ComplexType):
 		return super().type().type()
 
 	def code(self, prefix = ''):
-		c = prefix + self.type().code()
+		c = ''
+		if super().type().name():
+			c += prefix + self.type().code()
+		else:
+			c += prefix + super().type().code()
 		if self._const:
 			c += ' const'
 		if self._volatile:
