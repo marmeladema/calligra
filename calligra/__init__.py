@@ -625,8 +625,9 @@ class union(CompositeType, ComplexType):
 
 
 class namespace:
-	def __init__(self):
+	def __init__(self, parent = None):
 		self.types = collections.OrderedDict()
+		self.parent = parent
 
 	def register(self, name, type):
 		if not isinstance(type, PrimaryType):
@@ -647,6 +648,8 @@ class namespace:
 		for t in self.types:
 			if str(t) == name:
 				return self.types[name]
+		if self.parent:
+			return self.parent.get(name)
 		raise KeyError('unknown type %s' % (name, ))
 
 	def has(self, name):
