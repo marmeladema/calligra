@@ -120,6 +120,7 @@ class declaration(ComplexType):
 	    pointer = False,
 	    const = False,
 	    volatile = False,
+	    restrict = False,
 	    array = None,
 	    register = False,
 	    value = '',
@@ -133,6 +134,7 @@ class declaration(ComplexType):
 		)
 		self._const = const
 		self._volatile = volatile
+		self._restrict = restrict
 		self._pointer = pointer
 		self._value = value
 		self._array = array
@@ -154,6 +156,10 @@ class declaration(ComplexType):
 	@property
 	def volatile(self):
 		return self._volatile
+
+	@property
+	def restrict(self):
+		return self._restrict
 
 	@property
 	def pointer(self):
