@@ -94,7 +94,7 @@ class ComplexType(PrimaryType):
 		super().__init__(namespace, name, register = False, *args, **kwargs)
 		self._type = type
 
-		if register:
+		if register and name:
 			self.register(namespace)
 
 	def code(self):
