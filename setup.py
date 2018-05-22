@@ -14,6 +14,10 @@ def read(fname):
 	return open(os.path.join(os.path.dirname(__file__), fname)).read()
 
 
+examples_path = 'share/calligra/python{}.{}/examples'.format(
+    sys.version_info.major, sys.version_info.minor
+)
+
 setup(
     name = 'calligra',
     version = '0.1',
@@ -26,7 +30,7 @@ setup(
     url = 'https://github.com/marmeladema/calligra',
     download_url = 'https://github.com/marmeladema/calligra/archive/0.1.tar.gz',
     packages = find_packages(),
-    data_files = [('examples', glob.iglob('examples/*.py'))],
+    data_files = [(examples_path, glob.iglob('examples/*.py'))],
     long_description = read('README.rst'),
     classifiers = [
         'Development Status :: 3 - Alpha',
