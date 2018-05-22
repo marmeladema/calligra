@@ -505,7 +505,9 @@ class in6_addr_from_json(struct_from_json):
 		return code
 
 
-calligra.PrimaryType(calligra.stdlib.namespace, 'json_t', imported = True)
+calligra.PrimaryType(
+    calligra.stdlib.namespace, 'json_t', imported = 'jansson.h'
+)
 calligra.IntegerType(
     calligra.stdlib.namespace,
     'json_int_t',
