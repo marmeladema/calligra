@@ -75,8 +75,8 @@ class timespec(calligra.struct):
 
 
 class char(calligra.PrimaryType):
-	def __init__(self, namespace):
-		super().__init__(namespace, self.__class__.__name__, imported = True)
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
 
 	def nil(self, ns, chain):
 		#return 'strlen(%s) == 0' % (self.path(chain),)
@@ -118,9 +118,7 @@ class clean(calligra.function):
 		self._char = char
 
 		self.add(
-		    calligra.declaration(
-		        namespace, self._char, 's', pointer = True
-		    )
+		    calligra.declaration(namespace, self._char, 's', pointer = True)
 		)
 		self.add(
 		    calligra.declaration(namespace, namespace.get('uint8_t'), 'c')
@@ -165,7 +163,7 @@ types.append(
         'uint8_t',
         min_value = '0',
         max_value = 'UINT8_MAX',
-        imported = True
+        imported = 'stdint.h'
     ).type().name()
 )
 types.append(
@@ -174,7 +172,7 @@ types.append(
         'int8_t',
         min_value = 'INT8_MIN',
         max_value = 'INT8_MAX',
-        imported = True
+        imported = 'stdint.h'
     ).type().name()
 )
 types.append(
@@ -183,7 +181,7 @@ types.append(
         'uint16_t',
         min_value = '0',
         max_value = 'UINT16_MAX',
-        imported = True
+        imported = 'stdint.h'
     ).type().name()
 )
 types.append(
@@ -192,7 +190,7 @@ types.append(
         'int16_t',
         min_value = 'INT16_MIN',
         max_value = 'INT16_MAX',
-        imported = True
+        imported = 'stdint.h'
     ).type().name()
 )
 types.append(
@@ -201,7 +199,7 @@ types.append(
         'uint32_t',
         min_value = '0',
         max_value = 'UINT32_MAX',
-        imported = True
+        imported = 'stdint.h'
     ).type().name()
 )
 types.append(
@@ -210,12 +208,12 @@ types.append(
         'int32_t',
         min_value = 'INT32_MIN',
         max_value = 'INT32_MAX',
-        imported = True
+        imported = 'stdint.h'
     ).type().name()
 )
 types.append(
     calligra.IntegerType(
-        namespace, 'uint64_t', min_value = '0', imported = True
+        namespace, 'uint64_t', min_value = '0', imported = 'stdint.h'
     ).type().name()
 )
 types.append(
@@ -224,10 +222,47 @@ types.append(
         'int64_t',
         min_value = 'INT64_MIN',
         max_value = 'INT64_MAX',
-        imported = True
+        imported = 'stdint.h'
     ).type().name()
 )
-types.append(char(namespace).type().name())
+types.append(
+    calligra.IntegerType(
+        namespace,
+        'uintptr_t',
+        min_value = '0',
+        max_value = 'UINTPTR_MAX',
+        imported = 'stdint.h'
+    ).type().name()
+)
+types.append(
+    calligra.IntegerType(
+        namespace,
+        'intptr_t',
+        min_value = 'INTPTR_MIN',
+        max_value = 'INTPTR_MAX',
+        imported = 'stdint.h'
+    ).type().name()
+)
+types.append(
+    calligra.IntegerType(
+        namespace,
+        'uintmax_t',
+        min_value = '0',
+        max_value = 'UINTMAX_MAX',
+        imported = 'stdint.h'
+    ).type().name()
+)
+types.append(
+    calligra.IntegerType(
+        namespace,
+        'intmax_t',
+        min_value = 'INTMAX_MIN',
+        max_value = 'INTMAX_MAX',
+        imported = 'stdint.h'
+    ).type().name()
+)
+types.append(char(namespace, 'char', imported = True).type().name())
+types.append(char(namespace, 'signed char', imported = True).type().name())
 types.append(
     calligra.IntegerType(
         namespace,
@@ -249,6 +284,15 @@ types.append(
 types.append(
     calligra.IntegerType(
         namespace,
+        'signed short',
+        min_value = 'SHRT_MIN',
+        max_value = 'SHRT_MAX',
+        imported = True
+    ).type().name()
+)
+types.append(
+    calligra.IntegerType(
+        namespace,
         'unsigned short',
         min_value = '0',
         max_value = 'USHRT_MAX',
@@ -258,7 +302,43 @@ types.append(
 types.append(
     calligra.IntegerType(
         namespace,
+        'short int',
+        min_value = 'SHRT_MIN',
+        max_value = 'SHRT_MAX',
+        imported = True
+    ).type().name()
+)
+types.append(
+    calligra.IntegerType(
+        namespace,
+        'signed short int',
+        min_value = 'SHRT_MIN',
+        max_value = 'SHRT_MAX',
+        imported = True
+    ).type().name()
+)
+types.append(
+    calligra.IntegerType(
+        namespace,
+        'unsigned short int',
+        min_value = '0',
+        max_value = 'USHRT_MAX',
+        imported = True
+    ).type().name()
+)
+types.append(
+    calligra.IntegerType(
+        namespace,
         'int',
+        min_value = 'INT_MIN',
+        max_value = 'INT_MAX',
+        imported = True
+    ).type().name()
+)
+types.append(
+    calligra.IntegerType(
+        namespace,
+        'signed int',
         min_value = 'INT_MIN',
         max_value = 'INT_MAX',
         imported = True
@@ -285,7 +365,61 @@ types.append(
 types.append(
     calligra.IntegerType(
         namespace,
+        'signed long',
+        min_value = 'LONG_MIN',
+        max_value = 'LONG_MAX',
+        imported = True
+    ).type().name()
+)
+types.append(
+    calligra.IntegerType(
+        namespace,
         'unsigned long',
+        min_value = '0',
+        max_value = 'ULONG_MAX',
+        imported = True
+    ).type().name()
+)
+types.append(
+    calligra.IntegerType(
+        namespace,
+        'long int',
+        min_value = 'LONG_MIN',
+        max_value = 'LONG_MAX',
+        imported = True
+    ).type().name()
+)
+types.append(
+    calligra.IntegerType(
+        namespace,
+        'signed long int',
+        min_value = 'LONG_MIN',
+        max_value = 'LONG_MAX',
+        imported = True
+    ).type().name()
+)
+types.append(
+    calligra.IntegerType(
+        namespace,
+        'long signed int',
+        min_value = 'LONG_MIN',
+        max_value = 'LONG_MAX',
+        imported = True
+    ).type().name()
+)
+types.append(
+    calligra.IntegerType(
+        namespace,
+        'unsigned long int',
+        min_value = '0',
+        max_value = 'ULONG_MAX',
+        imported = True
+    ).type().name()
+)
+types.append(
+    calligra.IntegerType(
+        namespace,
+        'long unsigned int',
         min_value = '0',
         max_value = 'ULONG_MAX',
         imported = True
@@ -303,7 +437,43 @@ types.append(
 types.append(
     calligra.IntegerType(
         namespace,
+        'signed long long',
+        min_value = 'LLONG_MIN',
+        max_value = 'LLONG_MAX',
+        imported = True
+    ).type().name()
+)
+types.append(
+    calligra.IntegerType(
+        namespace,
         'unsigned long long',
+        min_value = '0',
+        max_value = 'ULLONG_MAX',
+        imported = True
+    ).type().name()
+)
+types.append(
+    calligra.IntegerType(
+        namespace,
+        'long long int',
+        min_value = 'LLONG_MIN',
+        max_value = 'LLONG_MAX',
+        imported = True
+    ).type().name()
+)
+types.append(
+    calligra.IntegerType(
+        namespace,
+        'signed long long int',
+        min_value = 'LLONG_MIN',
+        max_value = 'LLONG_MAX',
+        imported = True
+    ).type().name()
+)
+types.append(
+    calligra.IntegerType(
+        namespace,
+        'unsigned long long int',
         min_value = '0',
         max_value = 'ULLONG_MAX',
         imported = True
@@ -327,6 +497,16 @@ types.append(
         max_value = 'DBL_MAX',
         imported = True,
         format_specifier = '%g',
+    ).type().name()
+)
+types.append(
+    calligra.RealType(
+        namespace,
+        'long double',
+        min_value = 'LDBL_MIN',
+        max_value = 'LDBL_MAX',
+        imported = True,
+        format_specifier = '%Lg',
     ).type().name()
 )
 
