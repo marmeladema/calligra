@@ -61,8 +61,8 @@ class boolean_from_json(calligra.function):
 		code += prefix + 'if(json_is_boolean(json)) {\n'
 		code += prefix + '\t*value = json_boolean_value(json);\n'
 		code += prefix + '\treturn true;\n'
-		code += prefix + '}'
-		code += prefix + 'return false;'
+		code += prefix + '}\n'
+		code += prefix + 'return false;\n'
 		return code
 
 
@@ -137,7 +137,7 @@ class integer_from_json(calligra.function):
 			code += prefix + '\treturn false;\n'
 			code += prefix + '}\n'
 		code += prefix + '*value = ({})integer;\n'.format(self._integer.name())
-		code += prefix + 'return true;'
+		code += prefix + 'return true;\n'
 		return code
 
 
@@ -212,7 +212,7 @@ class real_from_json(calligra.function):
 		code += prefix + '\treturn false;\n'
 		code += prefix + '}\n'
 		code += prefix + '*value = ({})real;\n'.format(self._real.name())
-		code += prefix + 'return true;'
+		code += prefix + 'return true;\n'
 		return code
 
 
