@@ -2,8 +2,8 @@ import calligra
 
 
 class boolean(calligra.PrimaryType):
-	def __init__(self, namespace):
-		super().__init__(namespace, 'bool', imported = True)
+	def __init__(self, *args, **kwargs):
+		super().__init__(*args, **kwargs)
 
 	def format_specifier(self):
 		return '%u'
@@ -153,7 +153,8 @@ types.append(
         namespace, 'size_t', min_value = '0', imported = True
     ).type().name()
 )
-types.append(boolean(namespace).type().name())
+types.append(boolean(namespace, '_Bool', imported = True).type().name())
+types.append(boolean(namespace, 'bool', imported = 'stdbool.h').type().name())
 types.append(
     calligra.IntegerType(
         namespace,
