@@ -31,6 +31,7 @@ setup(
     download_url = 'https://github.com/marmeladema/calligra/archive/0.1.tar.gz',
     packages = find_packages(),
     data_files = [(examples_path, glob.iglob('examples/*.py'))],
+    package_data = {'calligra': ['importer/cparser.h']},
     long_description = read('README.rst'),
     classifiers = [
         'Development Status :: 3 - Alpha',

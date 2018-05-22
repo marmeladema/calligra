@@ -73,11 +73,13 @@ and the following declaration modifiers:
 
 Nested array of pointers or pointers to array are not supported.
 
-At the moment, you have to define everything from Python and generate everything.
+At the moment, you have two choices:
 
-In the future, you will be able to import definitions from :
+- define everything from Python
+- parse C code with the cparser importer module
 
-- pre-written C code (probably using pycparser)
+In the future, you will be able to import definitions from:
+
 - JSON Schema
 
 Examples
@@ -214,3 +216,15 @@ Which should generate something similar to (non-contractual code):
         }
         return json;
     }
+
+Importer
+--------
+
+Importer modules are located in the |calligra/importer/|_ directory and are meant to import C types from another format (like C).
+
+.. |calligra/importer/| replace:: ``calligra/importer/``
+.. _calligra/importer/: calligra/importer/
+
+Currently available importer modules are:
+
+- `calligra.importer.cparser`: to import C types directly from C code using the `pycparser <https://github.com/eliben/pycparser/>`_ package.
