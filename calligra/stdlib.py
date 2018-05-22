@@ -36,12 +36,16 @@ class sa_family_t(calligra.IntegerType):
 
 class in_addr(calligra.struct):
 	def __init__(self, namespace):
-		super().__init__(namespace, self.__class__.__name__, imported = True)
+		super().__init__(
+		    namespace, self.__class__.__name__, imported = 'netinet/in.h'
+		)
 
 
 class in6_addr(calligra.struct):
 	def __init__(self, namespace):
-		super().__init__(namespace, self.__class__.__name__, imported = True)
+		super().__init__(
+		    namespace, self.__class__.__name__, imported = 'netinet/in.h'
+		)
 
 
 class timeval(calligra.struct):
