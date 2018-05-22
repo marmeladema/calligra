@@ -353,6 +353,33 @@ def listnames(ns, name):
 	return names
 
 
+def include(includes, name):
+	if name and isinstance(name, str):
+		includes.add(name)
+
+
+def includes(ns, typesdict = {}):
+	includes = set()
+	for name in typesdict:
+		t = ns.get(name)
+		include(includes, t.imported())
+		for method in typesdict[name].get('methods', []):
+			func = getattr(t, method)
+			include(includes, func.imported())
+			func_type = ns.get(func.type().name())
+			include(includes, func_type.imported())
+			for property in func.properties():
+				property_type = ns.get(property.type().name())
+				include(includes, property_type.imported())
+
+	code = ''
+
+	for name in sorted(includes):
+		code += '#include <' + name + '>\n'
+
+	return code
+
+
 def header(ns, typesdict = {}):
 	code = ''
 
@@ -405,10 +432,16 @@ def source(ns, typesdict = {}):
 def code(ns, *args, **kwargs):
 	code = ''
 
+	code += '/* includes */\n'
+	code += includes(ns, *args, **kwargs)
+	code += '\n'
+
 	code += '/* header */\n'
 	code += header(ns, *args, **kwargs)
+	code += '\n'
 
 	code += '/* source */\n'
 	code += source(ns, *args, **kwargs)
+	code += '\n'
 
 	return code
