@@ -2,6 +2,11 @@
 calligra
 ========
 
+.. image:: https://travis-ci.com/marmeladema/calligra.svg?branch=master
+    :target: https://travis-ci.com/marmeladema/calligra
+
+---------------
+
 :Author: `Elie ROUDNINSKI <mailto:xademax@gmail.com>`_
 
 **calligra** is a pure Python package that tries to modelize a subset of the C langage syntax in order to reason about C types, from Python scripts.
@@ -15,25 +20,25 @@ Its main goals are to do metaprogrammation and code generation. It does **not pa
 .. sectnum::
 
 Installation
-==============
+============
 
 Requirements
-----------------
+------------
 
-**calligra** requires Python 3. It has been tested on Python 3.6 on Linux but it should work on 3.4 and 3.6 and on Windows also.
-At the moment, it does not require any external Python modules/packages, but this might change in the future.
+**calligra** requires Python 3. It has been tested on Python 3.5 and 3.6 on Linux.
+At the moment, it requires only pycparser in order to import pre-existing type from already written C code.
 
 As **calligra** is intended to generate code, some external dependencies might be needed to compile the generated code.
 
 From github
----------------
+-----------
 
 You can clone this repository and install it with setuptools directly::
 
     $ python3 setup.py install --user
 
 From pip
-------------
+--------
 
 As every pip available package, you can install it easily with the pip package::
 
