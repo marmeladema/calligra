@@ -1,6 +1,7 @@
 import calligra
 import calligra.stdlib
 
+import os
 import pycparser
 import argparse
 
@@ -9,6 +10,8 @@ composite = {
     'Union': calligra.union,
     'Enum': calligra.enum,
 }
+
+dir_path = os.path.dirname(os.path.realpath(__file__))
 
 
 class ASTContext:
@@ -177,13 +180,32 @@ def handle_FileAST(node, ctx):
 
 if __name__ == '__main__':
 	parser = argparse.ArgumentParser()
-	parser.add_argument("file", type=str, help="C file to parse")
-	parser.add_argument("-p", "--print", help="Print AST representation", type=str)
-	parser.add_argument("--no-cpp", help="Disable preprocessing with cpp", type=bool, default=False)
+	parser.add_argument(
+	    "file",
+	    type = str,
+	    help = "C file to parse",
+	)
+	parser.add_argument(
+	    "-p",
+	    "--print",
+	    help = "Print AST representation",
+	    type = str,
+	)
+	parser.add_argument(
+	    "--no-cpp",
+	    help = "Disable preprocessing with cpp",
+	    type = bool,
+	    default = False,
+	)
 	args = parser.parse_args()
 
 	ast = pycparser.parse_file(
-	    args.file, use_cpp = not args.no_cpp, cpp_args = ['-include', 'pycparser.h']
+	    args.file,
+	    use_cpp = not args.no_cpp,
+	    cpp_args = [
+	        '-include',
+	        os.path.join(dir_path, 'cparser.h'),
+	    ]
 	)
 	if args.print:
 		ast.show(buf = open(args.print, 'w+'))
