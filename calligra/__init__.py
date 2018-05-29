@@ -112,6 +112,9 @@ class ComplexType(PrimaryType):
 	def code(self):
 		return self.type().name()
 
+	def __str__(self):
+		return str(self.type().name())
+
 	def type(self):
 		return self._type
 
