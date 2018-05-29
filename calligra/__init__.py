@@ -509,7 +509,9 @@ class struct_clean(function):
 
 
 class enum(ComplexType, IntegerType, CompositeType):
-	def __init__(self, namespace, name, *args, **kwargs):
+	def __init__(
+	    self, namespace, name, prefix = None, sentinel = None, *args, **kwargs
+	):
 		super().__init__(
 		    namespace,
 		    PrimaryType(
@@ -518,6 +520,16 @@ class enum(ComplexType, IntegerType, CompositeType):
 		        register = False
 		    ), name, *args, **kwargs
 		)
+		self._prefix = prefix
+		self._sentinel = sentinel
+
+	@property
+	def prefix(self):
+		return self._prefix
+
+	@property
+	def sentinel(self):
+		return self._sentinel
 
 	def code(self, prefix = ''):
 		c = prefix + self.type().name() + ' {\n'
@@ -534,8 +546,10 @@ class enum(ComplexType, IntegerType, CompositeType):
 
 @add_method(enum, 'enum_from_str')
 class enum_from_str(function):
-	def __init__(self, namespace, name, prefix = None, sentinel = None):
+	def __init__(self, enum, prefix = None, sentinel = None):
 		# create function prototype
+		namespace = enum._namespace
+		name = enum.type().name()
 		super().__init__(
 		    namespace,
 		    namespace.get(name).type(),
@@ -572,14 +586,19 @@ class enum_from_str(function):
 				)
 				c += prefix + '\treturn {};\n'.format(type_name)
 				c += prefix + '}\n'
-		c += prefix + 'return ' + self._sentinel + ';\n'
+		if self._sentinel:
+			c += prefix + 'return ' + self._sentinel + ';\n'
+		else:
+			c += prefix + 'return 0;\n'
 		return c
 
 
 @add_method(enum, 'enum_to_str')
 class enum_to_str(function):
-	def __init__(self, namespace, name, prefix = None, sentinel = None):
+	def __init__(self, enum, prefix = None, sentinel = None):
 		# create function prototype
+		namespace = enum._namespace
+		name = enum.type().name()
 		super().__init__(
 		    namespace,
 		    namespace.get('char').type(),
