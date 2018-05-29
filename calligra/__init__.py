@@ -22,14 +22,16 @@ class PrimaryType(object):
 		if register and self.name():
 			self.register(namespace)
 
-	def __getattr__(self, name):
-		method = getattr(self.__class__, '__method_' + name)(self)
-		setattr(self, name, method)
-		return method
-
 	@classmethod
 	def add_method(cls, name, method):
 		setattr(cls, '__method_' + name, method)
+		setattr(
+		    cls, name,
+		    property(
+		        fget = lambda self: self.get_method(name),
+		        doc = method.__doc__
+		    )
+		)
 
 	@classmethod
 	def methods(cls):
@@ -37,8 +39,18 @@ class PrimaryType(object):
 			if attr.startswith('__method_'):
 				yield attr[len('__method_'):]
 
-	def method(self, name):
-		return getattr(self, name)
+	def get_method(self, name):
+		method = getattr(self, '__method_' + name)
+		if isinstance(method, type):
+			try:
+				method = method(self)
+			except Exception as e:
+				msg = 'Could not initialize method {} of {}'.format(
+				    name, self.name()
+				)
+				raise RuntimeError(msg) from e
+			setattr(self, '__method_' + name, method)
+		return method
 
 	def type(self):
 		return self
