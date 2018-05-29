@@ -99,7 +99,7 @@ class integer_from_json(calligra.function):
 		super().__init__(
 		    namespace,
 		    namespace.get('bool').type(),
-		    name + '_from_json',
+		    namespace.get(name).name().replace(' ', '_') + '_from_json',
 		)
 
 		self._integer = integer
@@ -174,7 +174,7 @@ class real_from_json(calligra.function):
 		super().__init__(
 		    namespace,
 		    namespace.get('bool').type(),
-		    name + '_from_json',
+		    namespace.get(name).name().replace(' ', '_') + '_from_json',
 		)
 
 		self._real = real
@@ -251,7 +251,7 @@ class char_from_json(calligra.function):
 		super().__init__(
 		    namespace,
 		    namespace.get('bool').type(),
-		    name + '_from_json',
+		    namespace.get(name).name().replace(' ', '_') + '_from_json',
 		)
 
 		self._char = char
