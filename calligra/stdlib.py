@@ -338,9 +338,27 @@ types.append(
 types.append(
     calligra.IntegerType(
         namespace,
+        'signed',
+        min_value = 'INT_MIN',
+        max_value = 'INT_MAX',
+        imported = True
+    ).type().name()
+)
+types.append(
+    calligra.IntegerType(
+        namespace,
         'signed int',
         min_value = 'INT_MIN',
         max_value = 'INT_MAX',
+        imported = True
+    ).type().name()
+)
+types.append(
+    calligra.IntegerType(
+        namespace,
+        'unsigned',
+        min_value = '0',
+        max_value = 'UINT_MAX',
         imported = True
     ).type().name()
 )
