@@ -4,6 +4,20 @@ import copy
 from . import operator
 
 
+method_ignored_suffixes = [
+    '_t',
+]
+
+
+def method_name(prefix, suffix):
+	for ignored_suffix in method_ignored_suffixes:
+		if prefix.endswith(ignored_suffix):
+			prefix = prefix[:-len(ignored_suffix)]
+			break
+	prefix = prefix.replace(' ', '_')
+	return prefix + suffix
+
+
 class PrimaryType(object):
 	def __init__(
 	    self,
@@ -456,7 +470,7 @@ class struct_clean(function):
 		super().__init__(
 		    namespace,
 		    namespace.get('void').type(),
-		    namespace.get(name).name() + "_clean"
+		    method_name(namespace.get(name).name(), '_clean')
 		)
 
 		self._struct = struct
@@ -553,7 +567,7 @@ class enum_from_str(function):
 		super().__init__(
 		    namespace,
 		    namespace.get(name).type(),
-		    namespace.get(name).name() + '_from_str'
+		    method_name(namespace.get(name).name(), '_from_str')
 		)
 		# add arguments
 		self.add(
@@ -602,7 +616,7 @@ class enum_to_str(function):
 		super().__init__(
 		    namespace,
 		    namespace.get('char').type(),
-		    namespace.get(name).name() + '_to_str',
+		    method_name(namespace.get(name).name(), '_to_str'),
 		    pointer = True,
 		    const = True
 		)

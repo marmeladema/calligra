@@ -99,7 +99,7 @@ class integer_from_json(calligra.function):
 		super().__init__(
 		    namespace,
 		    namespace.get('bool').type(),
-		    namespace.get(name).name().replace(' ', '_') + '_from_json',
+		    calligra.method_name(namespace.get(name).name(), '_from_json'),
 		)
 
 		self._integer = integer
@@ -174,7 +174,7 @@ class real_from_json(calligra.function):
 		super().__init__(
 		    namespace,
 		    namespace.get('bool').type(),
-		    namespace.get(name).name().replace(' ', '_') + '_from_json',
+		    calligra.method_name(namespace.get(name).name(), '_from_json'),
 		)
 
 		self._real = real
@@ -251,7 +251,7 @@ class char_from_json(calligra.function):
 		super().__init__(
 		    namespace,
 		    namespace.get('bool').type(),
-		    namespace.get(name).name().replace(' ', '_') + '_from_json',
+		    calligra.method_name(namespace.get(name).name(), '_from_json'),
 		)
 
 		self._char = char
@@ -296,7 +296,7 @@ class struct_to_json(calligra.function):
 		super().__init__(
 		    namespace,
 		    namespace.get('json_t').type(),
-		    namespace.get(name).name() + '_to_json',
+		    calligra.method_name(namespace.get(name).name(), '_to_json'),
 		    pointer = True
 		)
 
@@ -364,7 +364,7 @@ class struct_from_json(calligra.function):
 		super().__init__(
 		    namespace,
 		    namespace.get('bool').type(),
-		    struct.name() + '_from_json',
+		    calligra.method_name(namespace.get(name).name(), '_from_json'),
 		)
 
 		self._struct = struct
