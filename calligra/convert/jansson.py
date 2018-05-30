@@ -317,9 +317,6 @@ class struct_to_json(calligra.function):
 		code = ''
 		properties = self._struct.properties()
 
-		if not properties:
-			return code
-
 		code += prefix + 'json_t *json = json_object(), *child;\n'
 		code += prefix + 'if(!json) {\n'
 		code += prefix + '\treturn NULL;\n'
@@ -390,9 +387,6 @@ class struct_from_json(calligra.function):
 	def body(self, prefix = ''):
 		code = ''
 		properties = self._struct.properties()
-
-		if not properties:
-			return code
 
 		code += prefix + 'json_t *child;\n'
 		code += prefix + 'size_t count = 0;\n\n'
