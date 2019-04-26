@@ -3,7 +3,6 @@ import copy
 
 from . import operator
 
-
 method_ignored_suffixes = [
     '_t',
 ]
@@ -134,6 +133,9 @@ class ComplexType(PrimaryType):
 
 	def register(self, ns):
 		return ns.register(self.type().name(), self)
+
+	def anonymous(self):
+		return not self.name()
 
 	def __iter__(self):
 		yield from super().__iter__()
@@ -321,10 +323,10 @@ class CompositeType:
 	def properties(self, anonymous = False):
 		properties = []
 		for property in self._properties:
-			if str(property) or anonymous:
+			if not property.anonymous() or anonymous:
 				properties.append(property)
 			else:
-				properties.extend(property.properties())
+				properties.extend(property.properties(anonymous = anonymous))
 		return tuple(properties)
 
 	def property(self, name):
