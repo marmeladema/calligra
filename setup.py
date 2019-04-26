@@ -20,7 +20,7 @@ examples_path = 'share/calligra/python{}.{}/examples'.format(
 
 setup(
     name = 'calligra',
-    version = '0.3',
+    version = '0.4',
     author = 'Elie ROUDNINSKI',
     author_email = 'xademax@gmail.com',
     description = (
@@ -28,7 +28,7 @@ setup(
     ),
     license = 'MIT',
     url = 'https://github.com/marmeladema/calligra',
-    download_url = 'https://github.com/marmeladema/calligra/archive/0.3.tar.gz',
+    download_url = 'https://github.com/marmeladema/calligra/archive/0.4.tar.gz',
     packages = find_packages(),
     data_files = [(examples_path, glob.iglob('examples/*.py'))],
     package_data = {'calligra': ['importer/cparser.h']},
