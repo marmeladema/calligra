@@ -28,7 +28,7 @@ class network_address(calligra.struct):
 				# generate original access condition
 				access = super().access(ns, chain)
 				# retrieve parent type
-				parent = ns.get(chain[-1].type().name())
+				parent = ns.get(chain[-1].type())
 				# generate path for 'family'
 				path = parent.property('family').path(chain)
 				# compose '&&' condition based on original condition and 'family' value
@@ -47,7 +47,7 @@ class network_address(calligra.struct):
 				# generate original access condition
 				access = super().access(ns, chain)
 				# retrieve parent type
-				parent = ns.get(chain[-1].type().name())
+				parent = ns.get(chain[-1].type())
 				# generate path for 'family'
 				path = parent.property('family').path(chain)
 				# compose '&&' condition based on original condition and 'family' value
@@ -65,10 +65,11 @@ class network_address(calligra.struct):
 
 
 if __name__ == '__main__':
+	namespace = calligra.namespace(calligra.stdlib.namespace)
 	names = calligra.stdlib.listnames(
-	    calligra.stdlib.namespace,
-	    network_address(calligra.stdlib.namespace).type().name()
+	    namespace,
+	    network_address(namespace).type().name()
 	)
-	types = {name: dict(calligra.stdlib.namespace.get(name)) for name in names}
-	code = calligra.stdlib.code(calligra.stdlib.namespace, typesdict = types)
+	types = {name: dict(namespace.get(name)) for name in names}
+	code = calligra.stdlib.code(namespace, typesdict = types)
 	print(code)

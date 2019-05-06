@@ -35,10 +35,8 @@ class url(calligra.struct):
 
 
 if __name__ == '__main__':
-	names = calligra.stdlib.listnames(
-	    calligra.stdlib.namespace,
-	    url(calligra.stdlib.namespace).type().name()
-	)
-	types = {name: dict(calligra.stdlib.namespace.get(name)) for name in names}
-	code = calligra.stdlib.code(calligra.stdlib.namespace, typesdict = types)
+	namespace = calligra.namespace(calligra.stdlib.namespace)
+	names = calligra.stdlib.listnames(namespace, url(namespace).type().name())
+	types = {name: dict(namespace.get(name)) for name in names}
+	code = calligra.stdlib.code(namespace, typesdict = types)
 	print(code)
