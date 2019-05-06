@@ -489,40 +489,49 @@ class struct_clean(function):
 		    )
 		)
 
+	def body_prop(self, prop, chain, prefix = ''):
+		c = ''
+
+		prop_type = prop.type()
+
+		if hasattr(prop_type, 'clean'):
+
+			if isinstance(prop_type.clean, type):
+				prop_type.clean = prop_type.clean(
+				    self._namespace,
+				    prop.type().name()
+				)
+
+			cond = operator.operator('')
+			cond &= prop.access(self._namespace, chain)
+			cond &= ~prop.nil(self._namespace, chain)
+			if cond:
+				c += prefix + 'if(%s) {\n' % (cond, )
+				prefix += '\t'
+
+			c += prefix + '%s;\n' % (prop_type.clean.call(chain + (prop, )), )
+			if prop.pointer:
+				c += prefix + 'free(%s);\n' % (prop.path(chain), )
+				c += prefix + '%s = NULL;\n' % (prop.path(chain), )
+
+			if cond:
+				prefix = prefix[:-1]
+				c += prefix + '}\n'
+		elif prop_type.anonymous():
+			for child in prop_type.properties():
+				c += self.body_prop(child, chain + (prop, ), prefix = prefix)
+
+		return c
+
 	def body(self, prefix = ''):
 		c = ''
 		for prop in self._struct.properties():
-			prop_type = self._namespace.get(prop.type().name())
 
-			if hasattr(prop_type, 'clean'):
+			c += self.body_prop(
+			    prop, (self.properties()[0], ), prefix = prefix
+			)
 
-				if isinstance(prop_type.clean, type):
-					prop_type.clean = prop_type.clean(
-					    self._namespace,
-					    prop.type().name()
-					)
-
-				cond = operator.operator('')
-				cond &= prop.access(self._namespace, (self.properties()[0], ))
-				cond &= ~prop.nil(self._namespace, (self.properties()[0], ))
-				if cond:
-					c += prefix + 'if(%s) {\n' % (cond, )
-					prefix += '\t'
-
-				c += prefix + '%s;\n' % (
-				    prop_type.clean.call((self.properties()[0], prop)),
-				)
-				if prop.pointer:
-					c += prefix + 'free(%s);\n' % (
-					    prop.path((self.properties()[0], )),
-					)
-					c += prefix + '%s = NULL;\n' % (
-					    prop.path((self.properties()[0], )),
-					)
-
-				if cond:
-					prefix = prefix[:-1]
-					c += prefix + '}\n'
+			prop_type = prop.type()
 
 		return c
 
