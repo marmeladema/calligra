@@ -323,7 +323,7 @@ class struct_to_json(calligra.function):
 		code += prefix + '}\n'
 
 		for property in properties:
-			property_type = self._namespace.get(property.type().name())
+			property_type = self._namespace.get(property.type())
 
 			code += prefix + '/*' + property.name() + '*/\n'
 			access = property.access(self._namespace, (self.properties()[0], ))
@@ -397,7 +397,7 @@ class struct_from_json(calligra.function):
 		code += prefix + '}\n\n'
 
 		for property in properties:
-			property_type = self._namespace.get(property.type().name())
+			property_type = self._namespace.get(property.type())
 
 			code += prefix + '/*' + property.name() + '*/\n'
 			access = property.access(self._namespace, (self.properties()[0], ))

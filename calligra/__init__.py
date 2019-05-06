@@ -98,6 +98,9 @@ class PrimaryType(object):
 	def __str__(self):
 		return str(self.name())
 
+	def __bool__(self):
+		return not self.anonymous()
+
 	def path(self, chain):
 		#if self.type().name() != chain[-1].type().name():
 		#	raise RuntimeError('invalid declaration chain',self.type().name(),chain[-1].type().name())
@@ -110,6 +113,9 @@ class PrimaryType(object):
 		yield 'name', self.name()
 		yield 'imported', self.imported()
 		yield 'methods', list(self.methods())
+
+	def anonymous(self):
+		return not self.name()
 
 
 class ComplexType(PrimaryType):
@@ -126,16 +132,13 @@ class ComplexType(PrimaryType):
 		return self.type().name()
 
 	def __str__(self):
-		return str(self.type().name())
+		return str(self.type())
 
 	def type(self):
 		return self._type
 
 	def register(self, ns):
 		return ns.register(self.type().name(), self)
-
-	def anonymous(self):
-		return not self.name()
 
 	def __iter__(self):
 		yield from super().__iter__()
@@ -158,7 +161,7 @@ class declaration(ComplexType):
 	    *args,
 	    **kwargs
 	):
-		if not type:
+		if not str(type):
 			raise RuntimeError('could not declare empty type')
 		super().__init__(
 		    namespace, type, name, register = register, *args, **kwargs
@@ -207,15 +210,12 @@ class declaration(ComplexType):
 	def array(self):
 		return self._array
 
-	def type(self):
-		return super().type().type()
-
 	def code(self, prefix = ''):
 		c = ''
-		if super().type().name():
-			c += prefix + self.type().code()
+		if self.type().anonymous():
+			c += super().type().code(prefix = prefix)
 		else:
-			c += prefix + super().type().code()
+			c += prefix + super().type().type().code()
 		if self._const:
 			c += ' const'
 		if self._volatile:
@@ -239,7 +239,10 @@ class declaration(ComplexType):
 		cond = operator.operator('')
 		if self.pointer:
 			cond = operator.eq(path, 'NULL')
-		nil = ns.get(self.type().name()).nil(ns, chain + (self, ))
+		type = self.type()
+		if not type.anonymous():
+			type = ns.get(type)
+		nil = type.nil(ns, chain + (self, ))
 		return cond | nil
 
 	def value(self):

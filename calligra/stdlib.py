@@ -538,12 +538,13 @@ types.append(timespec(namespace).type().name())
 
 
 def walk(ns, name, func, visited = None):
-	type = ns.get(str(name))
+	type = ns.get(str(name)) if name else name
 	if visited is None:
 		visited = []
-	elif type in visited:
+	elif str(type) in visited:
 		return
-	visited.append(type)
+	if not type.anonymous():
+		visited.append(str(type))
 	if isinstance(type, calligra.CompositeType):
 		for property in type.properties():
 			walk(ns, property.type(), func, visited = visited)
@@ -552,7 +553,12 @@ def walk(ns, name, func, visited = None):
 
 def listnames(ns, name):
 	names = []
-	walk(ns, name, lambda t: names.append(t.type().name()))
+
+	def addname(t):
+		if not t.anonymous():
+			names.append(str(t.type()))
+
+	walk(ns, name, addname)
 	return names
 
 
@@ -572,7 +578,7 @@ def includes(ns, typesdict = {}):
 			func_type = ns.get(func.type().name())
 			include(includes, func_type.imported())
 			for property in func.properties():
-				property_type = ns.get(property.type().name())
+				property_type = ns.get(str(property.type()))
 				include(includes, property_type.imported())
 
 	code = ''
