@@ -337,7 +337,9 @@ class CompositeType:
 		for property in properties:
 			if property.name() == name:
 				return property
-		raise KeyError('could not find property %s' % (name, ))
+		raise KeyError(
+		    'could not find property \'%s\' for type \'%s\'' % (name, self)
+		)
 
 	def __iter__(self):
 		# pylint: disable=E1101
